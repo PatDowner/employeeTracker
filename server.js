@@ -1,11 +1,16 @@
 const express = require('express')
-
 const { prompt } = require('inquirer')
 const fs = require('fs')
 
+const app = express()
+
 const addDepartment = task => {
   prompt([
-
+    {
+      type: 'input',
+      name: 'departmentName',
+      message: 'Department name:'
+    }
   ])
     .then(() => {
 
@@ -16,7 +21,23 @@ const addDepartment = task => {
 
 const addRole = task => {
   prompt([
-
+    {
+      type: 'input',
+      name: 'title',
+      message: 'Role title:'
+    },
+    {
+      type: 'input',
+      name: 'salary',
+      message: 'Role salary:'
+    },
+    {
+      // how do I make this a list from the existing departments??
+      type: 'list',
+      name: 'department_id',
+      message: 'Role department:',
+      choices: departments
+    }
   ])
     .then(() => {
 
@@ -27,7 +48,28 @@ const addRole = task => {
 
 const addEmployee = task => {
   prompt([
-
+    {
+      type: 'input',
+      name: 'first_name',
+      message: 'Employee first name:'
+    }
+    {
+      type: 'input',
+      name: 'last_name',
+      message: 'Employee last name:'
+    }
+    {
+      type: 'list',
+      name: 'role_id',
+      message: 'Employee role:',
+      choices: roles
+    }
+    {
+      type: 'list',
+      name: 'manager_id',
+      message: `Employee's manager:`
+      choices: employees
+    }
   ])
     .then(() => {
 
@@ -38,7 +80,12 @@ const addEmployee = task => {
 
 const viewDepartment = task => {
   prompt([
-
+    {
+      type: 'list',
+      name: 'viewDepartment',
+      message: 'Select a department to view.'
+      choices: departments
+    }
   ])
     .then(() => {
 
@@ -49,7 +96,11 @@ const viewDepartment = task => {
 
 const viewRole = task => {
   prompt([
-
+    {
+      type: 'list',
+      name: 'viewRoles',
+      message: ''
+    }
   ])
     .then(() => {
 
@@ -60,7 +111,11 @@ const viewRole = task => {
 
 const viewEmployee = task => {
   prompt([
-
+    {
+      type: 'input',
+      name: '',
+      message: ''
+    }
   ])
     .then(() => {
 
@@ -71,7 +126,15 @@ const viewEmployee = task => {
 
 const updateEmployee = task => {
   prompt([
-
+    {
+      type: 'list',
+      name: 'updateEmployee',
+      message: 'Which employee would you like to update?'
+      choices: employees
+    },
+    {
+      
+    }
   ])
     .then(() => {
 
