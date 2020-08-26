@@ -71,14 +71,14 @@ const viewEmployees = () => {
   db.query(`
     SELECT employees.id, employees.first_name, employees.last_name,
       roles.title, roles.salary, departments.name AS department,
-      CONCAT(managers.first_name, ' ', managers.last_name) AS manager
+      CONCAT(manager.first_name, ' ', manager.last_name) AS manager
     FROM employees
     LEFT JOIN roles
     ON employees.role_id = roles.id
     LEFT JOIN departments
     ON roles.department_id = departments.id
-    LEFT JOIN employee manager
-    ON managers.id = employees.manager_id
+    LEFT JOIN employees manager
+    ON manager.id = employees.manager_id
   `, (err, employees) => {
     if (err) { console.log(err) }
     console.table(employees)
@@ -123,9 +123,9 @@ const addEmployee = () => {
         }
       ])
         .then(employees => {
-          db.query('INSERT INTO employee SET ?', employees, (err) => {
+          db.query('INSERT INTO employees SET ?', employees, (err) => {
             if (err) { console.log(err) }
-            sendStatu
+            console.log('employee created')
             start()
           })
         })
@@ -135,20 +135,20 @@ const addEmployee = () => {
 }
 
 const updateEmployeeRole = () => {
-  db.query('SELECT * FROM employee', (err, employees) => {
-    employees = employees.map(employee => ({
-      name: `${employee.first_name} ${employee.last_name}`,
-      value: employee.id
+  db.query('SELECT * FROM employees', (err, employees) => {
+    employees = employees.map(employees => ({
+      name: `${employees.first_name} ${employees.last_name}`,
+      value: employees.id
     }))
-    db.query('SELECT * FROM role', (err, roles) => {
-      roles = roles.map(role => ({
-        name: role.title,
-        value: role.id
+    db.query('SELECT * FROM roles', (err, roles) => {
+      roles = roles.map(roles => ({
+        name: roles.title,
+        value: roles.id
       }))
       prompt([
         {
           type: 'list',
-          name: 'employee_id',
+          name: 'employees_id',
           message: 'Choose an employee to update',
           choices: employees
         },
@@ -159,9 +159,9 @@ const updateEmployeeRole = () => {
           choices: roles
         },
       ])
-        .then(employee => {
-          console.log(employee.role_id)
-          db.query('UPDATE employee SET role_id = ? WHERE employee.id = ?', [employee.role_id, employee.employee_id], (err) => {
+        .then(employees => {
+          console.log(employees.role_id)
+          db.query('UPDATE employees SET role_id = ? WHERE employees.id = ?', [employees.role_id, employees.employees_id], (err) => {
             if (err) { console.log(err) }
             console.log('employee updated')
             start()
@@ -176,7 +176,7 @@ const updateEmployeeManager = () => {
   db.query('SELECT * FROM employees', (err, employees) => {
     employees = employees.map(employees => ({
       name: `${employees.first_name} ${employees.last_name}`,
-      value: employee.id
+      value: employees.id
     }))
     db.query('SELECT * FROM roles', (err, roles) => {
       roles = roles.map(roles => ({
@@ -186,7 +186,7 @@ const updateEmployeeManager = () => {
       prompt([
         {
           type: 'list',
-          name: 'employee_id',
+          name: 'employees_id',
           message: 'Choose an employee to update',
           choices: employees
         },
