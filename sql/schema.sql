@@ -2,14 +2,14 @@ DROP DATABASE IF EXISTS employees_db;
 
 CREATE DATABASE employees_db;
 
-use employees_db;
+USE employees_db;
 
 CREATE TABLE departments (
   id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
   name VARCHAR(30) UNIQUE NOT NULL
 );
 
-use employees_db;
+USE employees_db;
 CREATE TABLE roles (
   id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
   title VARCHAR(30) UNIQUE NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE roles (
   FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE
 );
 
-use employees_db;
+USE employees_db;
 CREATE TABLE employees (
   id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
   first_name VARCHAR(30) NOT NULL,
